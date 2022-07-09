@@ -4,21 +4,22 @@ import { useNavigate } from "react-router-dom";
 import { useStateSelector } from "state";
 import styled from "styled-components";
 import { flexCenter } from "util/css";
-import { ThemeColors } from "util/theme";
+import { CyberGraphic, GradientBackground } from "./comps";
 import Form from "./comps/Form";
 
 const Div = styled.div`
   height: 100vh;
   display: flex;
   flex-direction: row;
-  #form-container {
+  #left-container {
     position: relative;
     flex: 1;
     ${flexCenter()};
   }
-  #bg-container {
+  #right-container {
+    position: relative;
     flex: 1;
-    background: ${ThemeColors.GRADIENT};
+    overflow: hidden;
   }
 `;
 
@@ -34,11 +35,14 @@ const AuthScreen = () => {
 
   return (
     <Div>
-      <div id="form-container">
+      <div id="left-container">
         <Form />
         <GameOfLife />
       </div>
-      <div id="bg-container"></div>
+      <div id="right-container">
+        <GradientBackground />
+        {/* <CyberGraphic /> */}
+      </div>
     </Div>
   );
 };

@@ -4,9 +4,11 @@ interface FormContextInterface {
   formType: FormType;
   email: string;
   isSuccess: boolean;
+  isFailure: boolean;
   setEmail: (a: string) => void;
   setFormType: (a: FormType) => void;
   setIsSuccess: (a: boolean) => void;
+  setIsFailure: (a: boolean) => void;
 }
 
 const FormContext = createContext<Partial<FormContextInterface>>({});
@@ -20,6 +22,7 @@ const FormProvider = (props: any) => {
   const [formType, setFormType] = useState(FormType.signIn);
   const [email, setEmail] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isFailure, setIsFailure] = useState(false);
 
   return (
     <FormContext.Provider
@@ -27,9 +30,11 @@ const FormProvider = (props: any) => {
         formType,
         email,
         isSuccess,
+        isFailure,
         setEmail,
         setFormType,
         setIsSuccess,
+        setIsFailure,
       }}
       {...props}
     />

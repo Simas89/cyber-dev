@@ -1,9 +1,8 @@
 import axios from "axios";
-import { serverBaseURL } from "config";
 import { getAuthHeaders, makeLogout } from "./utils";
 
 export const server = axios.create({
-  baseURL: serverBaseURL,
+  baseURL: process.env.REACT_APP_BASE_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

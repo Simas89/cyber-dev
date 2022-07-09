@@ -4,7 +4,7 @@ import { Button, TextInput } from "components/form";
 import Spacer from "components/Spacer";
 import { Nunito } from "components/typography";
 import { useFormik } from "formik";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import useActionsUser from "state/actionHooks/useActionsUser";
 import { ThemeColors } from "util/theme";
 import { yupEmail, yupPassword } from "util/yup";
@@ -18,7 +18,7 @@ const validationSchema = Yup.object({
 
 export const SignInForm = () => {
   const [err, setErr] = useState("");
-  const { email, setEmail, setIsSuccess } = useFormContext();
+  const { email, setEmail, setIsSuccess, setIsFailure } = useFormContext();
   const { setUserData } = useActionsUser();
 
   const {
@@ -49,21 +49,22 @@ export const SignInForm = () => {
             setUserData(res.user);
           }, 3200);
         })
-        .catch((err) => setErr(err.message));
+        .catch((err) => {
+          setIsFailure(true);
+          setErr(err.message);
+        });
     },
     isInitialValid: false,
   });
-
-  const memoizedTouched = useMemo(() => touched, []);
 
   useEffect(() => {
     setEmail(values.email);
 
     if (values.email) {
-      setTouched({ email: true, ...memoizedTouched });
+      setTouched({ email: true, ...touched });
     }
     // @ts-ignore react-hooks/exhaustive-deps
-  }, [values.email, setTouched, setEmail, memoizedTouched]);
+  }, [values.email, setTouched, setEmail]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -96,7 +97,9 @@ export const SignInForm = () => {
 
       {Boolean(err) && (
         <>
-          <Nunito themeColor={ThemeColors.ERROR}>{err}</Nunito>
+          <Nunito themeColor={ThemeColors.ERROR} variant="body2">
+            {err}
+          </Nunito>
           <Spacer xs={10} />
         </>
       )}

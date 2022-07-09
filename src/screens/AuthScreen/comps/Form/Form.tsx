@@ -1,12 +1,11 @@
+import { useEffect } from "react";
+import styled from "styled-components";
 import Spacer from "components/Spacer";
 import { Nunito } from "components/typography";
-import styled from "styled-components";
 import { ThemeColors } from "util/theme";
-import { motion } from "framer-motion";
+import { motion, useMotionValue, useSpring } from "framer-motion";
 import { FormProvider, FormType, useFormContext } from "./context";
-import { Background } from "./comps/Background";
-import { SignUpForm } from "./comps/SignUpForm";
-import { SignInForm } from "./comps/SignInForm";
+import { SignUpForm, SignInForm, Background } from "./comps";
 import { SuccessAnimation } from "./comps/SuccessAnimation";
 
 const Wrapper = styled.div`
@@ -17,12 +16,11 @@ const Wrapper = styled.div`
   flex: 1;
   border-radius: 20px;
   border: 1px solid ${ThemeColors.ALICE_BLUE};
-  background: ${ThemeColors.CULTURED};
-  filter: drop-shadow(0px 0px 37px rgba(7, 46, 91, 0.23));
+  background: rgba(255, 255, 255, 0.4);
   padding: 30px;
   overflow: hidden;
-
-  transition: height 1s;
+  background: ${ThemeColors.CULTURED};
+  /* backdrop-filter: blur(5px); */
 
   .MuiTypography-root {
     user-select: none;
@@ -37,12 +35,39 @@ const Wrapper = styled.div`
 const MotionWrapper = motion(Wrapper);
 
 const Main = () => {
-  const { formType, setFormType, isSuccess } = useFormContext();
+  const { formType, setFormType, isSuccess, isFailure, setIsFailure } =
+    useFormContext();
+
+  const mv = useMotionValue(`drop-shadow(0px 0px 37px rgba(7, 46, 91, 0.3))`);
+
+  const shadow = useSpring(mv, { damping: 30 });
+
+  useEffect(() => {
+    if (isSuccess) {
+      shadow.set(`drop-shadow(0px 0px 37px rgba(44, 218, 148, 0.5))`);
+    }
+  }, [isSuccess, shadow]);
+
+  useEffect(() => {
+    if (isFailure) {
+      shadow.set(`drop-shadow(0px 0px 37px rgba(211, 47, 47, 0.5))`);
+    } else {
+      shadow.set(`drop-shadow(0px 0px 37px rgba(7, 46, 91, 0.3))`);
+    }
+
+    setTimeout(() => {
+      setIsFailure(false);
+    }, 1000);
+  }, [isFailure, setIsFailure, shadow]);
 
   return (
-    <MotionWrapper layout="position" transition={{ type: "spring" }}>
+    <MotionWrapper
+      layout="position"
+      transition={{ type: "spring" }}
+      style={{ filter: shadow }}
+    >
       <SuccessAnimation />
-      {/* <Background /> */}
+      <Background />
       <motion.div
         animate={{ y: isSuccess ? 300 : 0, opacity: isSuccess ? 0 : 1 }}
         transition={{

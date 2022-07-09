@@ -4,7 +4,7 @@ import { Button, TextInput } from "components/form";
 import Spacer from "components/Spacer";
 import { Nunito } from "components/typography";
 import { useFormik } from "formik";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import useActionsUser from "state/actionHooks/useActionsUser";
 import { ThemeColors } from "util/theme";
 import { yupEmail, yupPassword, yupPasswordRepeat } from "util/yup";
@@ -56,15 +56,13 @@ export const SignUpForm = () => {
     isInitialValid: false,
   });
 
-  const memoizedTouched = useMemo(() => touched, []);
-
   useEffect(() => {
     setEmail(values.email);
 
     if (values.email) {
-      setTouched({ email: true, ...memoizedTouched });
+      setTouched({ email: true, ...touched });
     }
-  }, [values.email, setTouched, setEmail, memoizedTouched]);
+  }, [values.email, setTouched, setEmail]);
 
   return (
     <form onSubmit={handleSubmit}>
@@ -110,7 +108,9 @@ export const SignUpForm = () => {
 
       {Boolean(err) && (
         <>
-          <Nunito themeColor={ThemeColors.ERROR}>{err}</Nunito>
+          <Nunito themeColor={ThemeColors.ERROR} variant="body2">
+            {err}
+          </Nunito>
           <Spacer xs={10} />
         </>
       )}

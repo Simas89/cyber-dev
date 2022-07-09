@@ -7,8 +7,9 @@ import useActionsGameOfLife from "state/actionHooks/useActionsGameOfLife";
 import { flexCenter } from "util/css";
 import isEqual from "lodash.isequal";
 import { FieldGrid, Row } from "./comps";
+import { motion } from "framer-motion";
 
-const FieldDiv = styled.div`
+const Div = styled.div`
   width: 100%;
   height: 100%;
   position: absolute;
@@ -21,8 +22,10 @@ const FieldDiv = styled.div`
   }
 `;
 
+const MotionDiv = motion(Div);
+
 const densitySelector = (x: number) => {
-  return 50;
+  return 20;
   if (x < 600) return 20;
   else if (x < 1000) return 30;
   else if (x < 1700) return 40;
@@ -30,7 +33,7 @@ const densitySelector = (x: number) => {
 };
 
 const GameWindow = () => {
-  const [drawHBlocks, setDrawHBlocks] = useState(1);
+  const [canDraw, setCanDraw] = useState(false);
   const { hBlocks, vBlocks, blockSize } = useStateSelector(({ gameOfLife }) => {
     return {
       hBlocks: gameOfLife.value.length,
@@ -46,36 +49,36 @@ const GameWindow = () => {
 
   useEffect(() => {
     if (width && height) {
+      const drawHBlocks = densitySelector(width);
+
       const newBlockSize = Math.ceil(width / drawHBlocks);
       const totalVBlocks = Math.ceil(height / newBlockSize);
-
-      setDrawHBlocks(densitySelector(width));
 
       setBlockSize(newBlockSize);
       setHorizontalBlocks(drawHBlocks);
       setVerticalBlocks(totalVBlocks);
+
+      setCanDraw(true);
     }
-  }, [
-    setVerticalBlocks,
-    setHorizontalBlocks,
-    blockSize,
-    width,
-    height,
-    drawHBlocks,
-  ]);
+  }, [setVerticalBlocks, setHorizontalBlocks, blockSize, width, height]);
 
   useGameOfLife();
 
   return (
-    <FieldDiv ref={ref}>
+    <MotionDiv
+      ref={ref}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ delay: 0.1 }}
+    >
       <div id="window">
         <FieldGrid />
-        {drawHBlocks !== 1 &&
+        {canDraw &&
           Array.apply(null, Array(vBlocks)).map((_, idx) => (
             <Row key={"rKey" + idx} length={hBlocks} vBlock={idx} />
           ))}
       </div>
-    </FieldDiv>
+    </MotionDiv>
   );
 };
 

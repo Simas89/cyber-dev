@@ -22,7 +22,7 @@ const Div = styled.div`
   }
 
   #stripe-b {
-    background: ${ThemeColors.GRADIENT};
+    background: ${ThemeColors.CADE_BLUE};
     height: 500px;
     left: 20px;
     top: -30px;

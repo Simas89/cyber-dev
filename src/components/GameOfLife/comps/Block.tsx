@@ -12,8 +12,8 @@ interface DivProps {
   blockSize: number;
 }
 
-const Div = styled.svg<DivProps>`
-  border-radius: 10%;
+const Div = styled.div<DivProps>`
+  border-radius: 20%;
   ${flexCenter()};
 
   background: ${({ isAlive }) =>
@@ -48,8 +48,9 @@ export const Block = memo<BlockProps>(({ hBlock, vBlock }) => {
 
   return (
     <MotionDiv
+      initial={{ opacity: 0.2 }}
       animate={{
-        opacity: isAlive ? 0.8 : 0.3,
+        opacity: isAlive ? 0.7 : 0.2,
       }}
       transition={{ duration: isAlive ? 2 : 0 }}
       onMouseEnter={handleMouseEnter}
