@@ -24,14 +24,6 @@ const Div = styled.div`
 
 const MotionDiv = motion(Div);
 
-const densitySelector = (x: number) => {
-  return 25;
-  if (x < 600) return 20;
-  else if (x < 1000) return 30;
-  else if (x < 1700) return 40;
-  else return 50;
-};
-
 const GameWindow = () => {
   const [canDraw, setCanDraw] = useState(false);
   const { hBlocks, vBlocks, blockSize } = useStateSelector(({ gameOfLife }) => {
@@ -49,12 +41,13 @@ const GameWindow = () => {
 
   useEffect(() => {
     if (width && height) {
-      const drawHBlocks = densitySelector(width);
+      const density = 50;
+      const drawHBlocks = Math.ceil(width / density);
 
-      const newBlockSize = Math.ceil(width / drawHBlocks);
-      const totalVBlocks = Math.ceil(height / newBlockSize);
+      const initBlockSize = Math.ceil(width / drawHBlocks);
+      const totalVBlocks = Math.ceil(height / initBlockSize);
 
-      setBlockSize(newBlockSize);
+      setBlockSize(initBlockSize);
       setHorizontalBlocks(drawHBlocks);
       setVerticalBlocks(totalVBlocks);
 
