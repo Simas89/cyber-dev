@@ -25,7 +25,7 @@ const Div = styled.div`
 const MotionDiv = motion(Div);
 
 const densitySelector = (x: number) => {
-  return 20;
+  return 25;
   if (x < 600) return 20;
   else if (x < 1000) return 30;
   else if (x < 1700) return 40;

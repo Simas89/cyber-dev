@@ -93,6 +93,12 @@ export const SignUpForm = () => {
         placeholder="Password"
         error={Boolean(touched.password && errors.password)}
         helperText={touched.password && errors.password}
+        inputProps={{
+          autocomplete: "new-password",
+          form: {
+            autocomplete: "off",
+          },
+        }}
       />
       <Spacer xs={10} />
       <TextInput
@@ -106,6 +112,12 @@ export const SignUpForm = () => {
         placeholder="Repeat password"
         error={Boolean(touched.repeatPassword && errors.repeatPassword)}
         helperText={touched.repeatPassword && errors.repeatPassword}
+        inputProps={{
+          autocomplete: "new-password",
+          form: {
+            autocomplete: "off",
+          },
+        }}
       />
       <Spacer xs={20} />
 

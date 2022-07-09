@@ -92,7 +92,6 @@ export const SignInForm = () => {
         placeholder="Password"
         error={Boolean(touched.password && errors.password)}
         helperText={touched.password && errors.password}
-        autoComplete="off"
         inputProps={{
           autocomplete: "new-password",
           form: {
