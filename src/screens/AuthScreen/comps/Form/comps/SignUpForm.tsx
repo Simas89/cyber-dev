@@ -19,7 +19,7 @@ const validationSchema = Yup.object({
 
 export const SignUpForm = () => {
   const [err, setErr] = useState("");
-  const { email, setEmail, setIsSuccess } = useFormContext();
+  const { email, setEmail, setIsSuccess, setIsFailure } = useFormContext();
   const { setUserData } = useActionsUser();
 
   const {
@@ -51,7 +51,10 @@ export const SignUpForm = () => {
             setUserData(res.user);
           }, 3200);
         })
-        .catch((err) => setErr(err.message));
+        .catch((err) => {
+          setIsFailure(true);
+          setErr(err.message);
+        });
     },
     isInitialValid: false,
   });
