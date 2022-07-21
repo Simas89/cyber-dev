@@ -1,21 +1,21 @@
 import { Button, Typography } from "@mui/material";
 import { makeLogout } from "api/utils";
 import { useAuthContext } from "context/authContext";
-import { useLayoutEffect } from "react";
+import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 const SignedInScreen = () => {
   const { user } = useAuthContext();
   const navigate = useNavigate();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!user) {
       navigate("/auth");
     }
   }, [user, navigate]);
   return (
     <div>
-      <Typography>{user.email}</Typography>
+      <Typography>{user?.email}</Typography>
       <Button variant="contained" onClick={makeLogout}>
         Logout
       </Button>
